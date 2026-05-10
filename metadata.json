@@ -1,0 +1,10 @@
+{
+  "name": "Hanzi Heroes",
+  "description": "A gamified Chinese character assembly and learning platform for 2nd and 3rd graders. Features Dogman-style comics and Minecraft-inspired adventures to master Chinese character components.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "Firebase integration for teacher word lists",
+    "Gamified learning with rewards",
+    "Interactive character assembly mechanics"
+  ]
+}

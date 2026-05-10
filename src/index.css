@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=DotGothic16&family=Bangers&family=Inter:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: "DotGothic16", sans-serif;
+  --font-comic: "Comic Neue", cursive;
+  --font-bangers: "Bangers", system-ui;
+
+  --color-mc-green: #528032;
+  --color-mc-brown: #795548;
+  --color-mc-dirt: #8B4513;
+  --color-hero-red: #E63946;
+  --color-hero-blue: #457B9D;
+  --color-hero-yellow: #F1FAEE;
+}
+
+@layer base {
+  body {
+    @apply bg-hero-yellow text-slate-800 font-sans cursor-default overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .pixel-border {
+    box-shadow: 
+      0 -4px 0 0 black,
+      0 4px 0 0 black,
+      -4px 0 0 0 black,
+      4px 0 0 0 black;
+  }
+  
+  .comic-bubble {
+    position: relative;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  .comic-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 40px;
+    border-width: 20px 20px 0;
+    border-style: solid;
+    border-color: #000 transparent;
+    display: block;
+    width: 0;
+  }
+
+  .comic-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: 43px;
+    border-width: 17px 17px 0;
+    border-style: solid;
+    border-color: #fff transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+  }
+
+  .mc-panel {
+    @apply bg-stone-300 border-4 border-stone-600 border-b-stone-800 border-r-stone-800;
+  }
+
+  .btn-pixel {
+    @apply relative px-6 py-2 bg-mc-green text-white font-pixel text-lg active:top-[2px] transition-all;
+    box-shadow: 0 4px 0 0 #3a5c24, 0 -4px 0 0 #7cb356 inset;
+  }
+}
+
+.minecraft-bg {
+  background-image: 
+    linear-gradient(45deg, #528032 25%, transparent 25%), 
+    linear-gradient(-45deg, #528032 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #528032 75%), 
+    linear-gradient(-45deg, transparent 75%, #528032 75%);
+  background-size: 40px 40px;
+  background-color: #4a752c;
+}
+

@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "Word": {
+      "title": "Word",
+      "description": "A Chinese character and its components.",
+      "type": "object",
+      "properties": {
+        "character": { "type": "string" },
+        "pinyin": { "type": "string" },
+        "meaning": { "type": "string" },
+        "components": { 
+          "type": "array", 
+          "items": { "type": "string" },
+          "description": "The radicals or parts that make up the character."
+        },
+        "difficulty": { "type": "integer", "enum": [1, 2, 3] },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["character", "pinyin", "meaning", "components"]
+    },
+    "WordList": {
+      "title": "WordList",
+      "description": "A customized collection of words created by a teacher.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "wordIds": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "wordIds", "teacherId"]
+    },
+    "UserProgress": {
+      "title": "UserProgress",
+      "description": "Progress and rewards for a student.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "totalCoins": { "type": "integer" },
+        "level": { "type": "integer" },
+        "badges": { "type": "array", "items": { "type": "string" } },
+        "unlockedItems": { "type": "array", "items": { "type": "string" } },
+        "pet": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string" },
+            "name": { "type": "string" },
+            "level": { "type": "integer" }
+          }
+        }
+      },
+      "required": ["userId", "totalCoins"]
+    },
+    "GameSession": {
+      "title": "GameSession",
+      "description": "A record of a single game play session.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "gameType": { "type": "string", "enum": ["assembly", "card_match"] },
+        "score": { "type": "integer" },
+        "wordsLearned": { "type": "array", "items": { "type": "string" } },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "gameType", "score"]
+    }
+  },
+  "firestore": {
+    "words": {
+      "schema": "Word",
+      "description": "Global database of Chinese characters."
+    },
+    "wordLists": {
+      "schema": "WordList",
+      "description": "Teacher-curated word sets."
+    },
+    "progress": {
+      "schema": "UserProgress",
+      "description": "Student progress tracking."
+    },
+    "sessions": {
+      "schema": "GameSession",
+      "description": "Historical game sessions."
+    }
+  }
+}

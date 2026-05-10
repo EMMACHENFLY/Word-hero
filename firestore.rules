@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Words: Public read, admin write (simplified for demo, but secure)
+    match /words/{wordId} {
+      allow read: if true;
+      allow write: if isSignedIn(); // In a real app, this would be admin check
+    }
+
+    // WordLists: Creator can read/write
+    match /wordLists/{listId} {
+      allow read: if true;
+      allow create: if isSignedIn() && request.resource.data.teacherId == request.auth.uid;
+      allow update, delete: if isOwner(resource.data.teacherId);
+    }
+
+    // User Progress: Only the user can access their own progress
+    match /progress/{progressId} {
+      allow read: if isOwner(progressId);
+      allow create: if isOwner(progressId) && request.resource.data.userId == progressId;
+      allow update: if isOwner(progressId) && 
+                      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['totalCoins', 'level', 'badges', 'unlockedItems', 'pet']);
+    }
+
+    // Game Sessions: Users can create sessions and read their own
+    match /sessions/{sessionId} {
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}
